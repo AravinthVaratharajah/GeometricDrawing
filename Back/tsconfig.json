@@ -3,7 +3,9 @@
     "target": "ES6",
     "outDir": "dist",
     "esModuleInterop": true,
-    "moduleResolution": "Node"
+    "moduleResolution": "node",
+    "strict": true,
+    "module": "CommonJS"
   },
   "include": ["src"]
 }
