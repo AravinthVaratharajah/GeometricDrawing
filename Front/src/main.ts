@@ -1,4 +1,4 @@
-import { r, samples, svgns } from './constant';
+import { multiplicationFactor, r, samples, svgns } from './constant';
 import { Point } from './interfaces/Point';
 import { drawLine, getAnglesFormIndex, getPointsFormAngles } from './misc';
 import './style.scss';
@@ -19,7 +19,9 @@ for (let i = 0; i < samples; i++) {
   container && container.appendChild(circle);
 }
 
-const p1: Point = { x: 20, y: 32 };
-const p2: Point = { x: 40, y: 52 };
-
-drawLine(p1, p2);
+for (let i = 0; i < samples; i++) {
+  const j = i * multiplicationFactor;
+  const p1: Point = getPointsFormAngles(getAnglesFormIndex(i));
+  const p2: Point = getPointsFormAngles(getAnglesFormIndex(j));
+  drawLine(p1, p2);
+}
