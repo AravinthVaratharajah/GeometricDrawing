@@ -1,7 +1,13 @@
 import { cx0, cy0, r0, svgns } from './constant';
 import { Point } from './interfaces/Point';
 
-export const getAnglesFormIndex = (index: number) => (index * 2 * Math.PI) / 10;
+export const getAnglesFormIndex = (
+  index: number,
+  sampleNbr: number
+): number => {
+  return (index * 2 * Math.PI) / sampleNbr;
+};
+
 export const getPointsFormAngles = (angle: number) => {
   return {
     x: cx0 + r0 * Math.cos(angle),
