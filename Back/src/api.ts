@@ -16,8 +16,8 @@ app.get('/date', (req, res) => {
 
 app.get('/config', (req, res) => {
   const config: Config = {
-    samples: 45,
-    multiplicationFactor: 52,
+    samples: Math.random() * 100,
+    multiplicationFactor: Math.random() * 100,
   };
   res.json(config);
 });

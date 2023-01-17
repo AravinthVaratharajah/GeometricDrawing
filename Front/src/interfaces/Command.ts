@@ -3,19 +3,53 @@ import { objectKeys, querySelector, sleep } from '../misc';
 import { Config } from './Config';
 
 export class Command {
+  _isPlaying = false;
   callback: (config: Config) => void = () => {};
-  isPlaying = false;
 
-  constructor(public config: Config) {
-    this.render();
+  constructor(config: Config) {
+    this.config = config;
     this.setupActions();
   }
 
+  get isPlaying() {
+    // console.log('get isPlaying');
+    return this._isPlaying;
+  }
+
+  set isPlaying(val: boolean) {
+    // console.log(`set isPlaying ${val}`);
+    this._isPlaying = val;
+    this.render();
+    if (this.isPlaying) this.playAsync();
+  }
+
+  _config: Config = {
+    samples: 29,
+    multiplicationFactor: 1,
+  };
+
+  get config() {
+    return this._config;
+  }
+  set config(val: Config) {
+    this._config = val;
+    this.render();
+    this.callback(this.config);
+  }
+
   increaseMultiplicationFactor() {
-    this.config.multiplicationFactor += 0.01;
-    this.config.multiplicationFactor %= 100;
-    this.config.multiplicationFactor =
-      +this.config.multiplicationFactor.toFixed(2);
+    let mf = this.config.multiplicationFactor;
+    mf += 0.01;
+    mf %= 100;
+    mf = +mf.toFixed(2);
+
+    this.config = { ...this.config, multiplicationFactor: mf };
+  }
+
+  increaseSamples() {
+    this.config.samples += 0.01;
+    this.config.samples %= 100;
+    this.config.samples = +this.config.samples.toFixed(2);
   }
 
   onUpdate(callback: (config: Config) => void) {
@@ -24,10 +58,9 @@ export class Command {
 
   async playAsync() {
     while (this.isPlaying) {
-      await sleep(10);
+      await sleep(5);
       this.increaseMultiplicationFactor();
-      this.render();
-      this.callback(this.config);
+      this.increaseSamples();
     }
   }
 
@@ -54,16 +87,13 @@ export class Command {
         HTMLInputElement
       );
       sliderElt.addEventListener('input', () => {
-        this.config[prop] = +sliderElt.value;
-        this.render();
-        this.callback(this.config);
+        this.config = { ...this.config, [prop]: +sliderElt.value };
       });
     }
 
     const playButton = querySelector('div.command button.play');
     playButton.addEventListener('click', () => {
       this.isPlaying = !this.isPlaying;
-      this.render();
       if (this.isPlaying) this.playAsync();
     });
 
@@ -73,8 +103,6 @@ export class Command {
         try {
           const response = await fetch(url);
           this.config = await response.json();
-          this.render();
-          this.callback(this.config);
         } catch (err) {
           console.error('error: ', err);
           window.alert('Technical error /!\\');
