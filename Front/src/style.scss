@@ -1,18 +1,18 @@
-$color:rgb(255, 119, 0);
+$color: rgb(255, 119, 0);
 
-*{
+* {
   box-sizing: border-box;
 }
 
-body{
+body {
   font-family: sans-serif;
 }
 
-h1{
+h1 {
   margin: 0;
 }
 
-div.command{
+div.command {
   border: 0.1em solid $color;
   width: 50em;
   padding: 0.5em;
@@ -21,15 +21,20 @@ div.command{
   flex-flow: column;
   gap: 2em;
 
-  label{
+  label {
     display: flex;
     flex-flow: column;
   }
 
-  button{
-    align-self: center;
-    padding: 0.5em 1em;
-    cursor: pointer;
+  nav {
+    display: flex;
+    justify-content: space-between;
+
+    button {
+      align-self: center;
+      padding: 0.5em 1em;
+      cursor: pointer;
+    }
   }
 }
 

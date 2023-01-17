@@ -35,7 +35,7 @@ export class Command {
     const props = objectKeys(this.config);
     for (const prop of props) {
       const elt = querySelector(`div.command label.${prop} span span`);
-      elt.innerHTML = this.config[prop].toString();
+      elt.innerHTML = this.config[prop as keyof Config].toString();
       const sliderElt = querySelector(
         `div.command label.${prop} input`,
         HTMLInputElement
@@ -69,17 +69,17 @@ export class Command {
 
     const configBtn = querySelector('div.command button.getConfig');
     configBtn.addEventListener('click', () => {
-      (async () => {
-        try {
+      try {
+        (async () => {
           const response = await fetch(url);
-          this.config = await response.json();
+          const config = await response.json();
           this.render();
-          this.callback(this.config);
-        } catch (err) {
-          console.error('error: ', err);
-          window.alert('Technical error /!\\');
-        }
-      })();
+          this.callback(config);
+        })();
+      } catch (err) {
+        console.error('error: ', err);
+        window.alert('Technical error /!\\');
+      }
     });
   }
 }
