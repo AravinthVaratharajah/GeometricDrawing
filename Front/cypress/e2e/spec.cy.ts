@@ -9,5 +9,14 @@ describe('template spec', () => {
     cy.contains('button', 'Play').click();
     cy.wait(2000);
     cy.contains('button', 'Stop').click();
+    cy.get('div.command label.samples input')
+      .invoke('val', 50)
+      .trigger('input');
+    cy.get('div.command label.multiplicationFactor input')
+      .invoke('val', 50)
+      .trigger('input');
+    cy.contains('button', 'Play').click();
+    cy.wait(2000);
+    cy.contains('button', 'Stop').click();
   });
 });
