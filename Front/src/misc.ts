@@ -26,12 +26,18 @@ export const drawLine = (p1: Point, p2: Point) => {
   container && container.appendChild(line);
 };
 
-export const querySelector = (cssSelector: string) => {
+export const querySelector = <T extends HTMLElement>(
+  cssSelector: string,
+  type?: new () => T
+) => {
   const elt = document.querySelector(cssSelector);
   if (elt === null)
     throw new Error(`Cannot find element with selector: ${cssSelector}.`);
 
-  return elt;
+  if (type && !(elt instanceof type))
+    throw new Error(`Element found is not with the type : ${type}`);
+
+  return elt as T;
 };
 
 export const objectKeys = <T extends object>(o: T): (keyof T)[] => {

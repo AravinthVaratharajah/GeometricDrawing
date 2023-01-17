@@ -17,10 +17,11 @@ export class Command {
     for (const prop of props) {
       const elt = querySelector(`div.command label.${prop} span span`);
       elt.innerHTML = this.config[prop as keyof Config].toString();
+      const sliderElt = querySelector(
+        `div.command label.${prop} input`,
+        HTMLInputElement
+      );
+      sliderElt.value = this.config[prop].toString();
     }
-  }
-
-  setConfig(config: Config) {
-    throw new Error('Method not implemented.');
   }
 }
