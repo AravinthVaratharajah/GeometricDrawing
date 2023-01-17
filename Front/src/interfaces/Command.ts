@@ -5,10 +5,11 @@ import {
   querySelector,
   sleep,
 } from '../misc';
+import { CommandCallback } from './CommandCallback';
 import { Config } from './Config';
 
 export class Command {
-  #callback: (config: Config) => void = () => {};
+  #callback: CommandCallback = () => {};
   #config: Config = {
     samples: 29,
     multiplicationFactor: 1,
