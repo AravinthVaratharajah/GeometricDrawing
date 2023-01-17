@@ -1,12 +1,24 @@
 import { r, svgns } from '../constant';
-import { drawLine, getAnglesFormIndex, getPointsFormAngles } from '../misc';
+import {
+  drawLine,
+  getAnglesFormIndex,
+  getPointsFormAngles,
+  querySelector,
+} from '../misc';
 import { Config } from './Config';
 import { Point } from './Point';
 
 export class Board {
   config: Config = { multiplicationFactor: 3, samples: 100 };
 
+  clean() {
+    querySelector('g.samples').innerHTML = '';
+    querySelector('g.lines').innerHTML = '';
+  }
+
   draw() {
+    this.clean();
+
     const container = document.querySelector('g.samples');
 
     if (container === null) {

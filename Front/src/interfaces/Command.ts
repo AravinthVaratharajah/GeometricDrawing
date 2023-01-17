@@ -6,6 +6,7 @@ export class Command {
 
   constructor(public config: Config) {
     this.render();
+    this.setupActions();
   }
 
   onUpdate(callback: (config: Config) => void) {
@@ -23,5 +24,22 @@ export class Command {
       );
       sliderElt.value = this.config[prop].toString();
     }
+  }
+
+  setupActions() {
+    const props = objectKeys(this.config);
+    for (const prop of props) {
+      const sliderElt = querySelector(
+        `div.command label.${prop} input`,
+        HTMLInputElement
+      );
+      sliderElt.addEventListener('input', () => {
+        this.config[prop] = +sliderElt.value;
+        this.render();
+        this.callback(this.config);
+      });
+    }
+
+    const playButton = querySelector('div.command button.play');
   }
 }
