@@ -49,3 +49,10 @@ export const sleep = (delay: number) => {
     setTimeout(resolve, delay);
   });
 };
+
+export const increaseMultiplicationFactor = (mf: number) => {
+  mf += 0.01;
+  mf %= 100;
+  mf = +mf.toFixed(2);
+  return mf;
+};

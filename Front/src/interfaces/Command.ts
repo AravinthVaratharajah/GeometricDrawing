@@ -1,5 +1,10 @@
 import { url } from '../constant';
-import { objectKeys, querySelector, sleep } from '../misc';
+import {
+  increaseMultiplicationFactor,
+  objectKeys,
+  querySelector,
+  sleep,
+} from '../misc';
 import { Config } from './Config';
 
 export class Command {
@@ -37,19 +42,10 @@ export class Command {
     if (this.isPlaying) this.playAsync();
   }
 
-  increaseMultiplicationFactor() {
-    let mf = this.config.multiplicationFactor;
+  increaseMultiplicationFactor(mf: number) {
     mf += 0.01;
     mf %= 100;
     mf = +mf.toFixed(2);
-
-    this.config = { ...this.config, multiplicationFactor: mf };
-  }
-
-  increaseSamples() {
-    this.config.samples += 0.01;
-    this.config.samples %= 100;
-    this.config.samples = +this.config.samples.toFixed(2);
   }
 
   onUpdate(callback: (config: Config) => void) {
@@ -59,8 +55,8 @@ export class Command {
   async playAsync() {
     while (this.isPlaying) {
       await sleep(5);
-      this.increaseMultiplicationFactor();
-      this.increaseSamples();
+      const mf = increaseMultiplicationFactor(this.config.multiplicationFactor);
+      this.config = { ...this.config, multiplicationFactor: mf };
     }
   }
 
