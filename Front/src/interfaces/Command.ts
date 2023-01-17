@@ -1,16 +1,33 @@
-import { objectKeys, querySelector } from '../misc';
+import { objectKeys, querySelector, sleep } from '../misc';
 import { Config } from './Config';
 
 export class Command {
   callback: (config: Config) => void = () => {};
+  isPlaying = false;
 
   constructor(public config: Config) {
     this.render();
     this.setupActions();
   }
 
+  increaseMultiplicationFactor() {
+    this.config.multiplicationFactor += 0.01;
+    this.config.multiplicationFactor %= 100;
+    this.config.multiplicationFactor =
+      +this.config.multiplicationFactor.toFixed(2);
+  }
+
   onUpdate(callback: (config: Config) => void) {
     this.callback = callback;
+  }
+
+  async playAsync() {
+    while (this.isPlaying) {
+      await sleep(10);
+      this.increaseMultiplicationFactor();
+      this.render();
+      this.callback(this.config);
+    }
   }
 
   render() {
@@ -24,6 +41,8 @@ export class Command {
       );
       sliderElt.value = this.config[prop].toString();
     }
+    const playButton = querySelector('div.command button.play');
+    playButton.innerHTML = this.isPlaying ? 'Stop' : 'Play';
   }
 
   setupActions() {
@@ -41,5 +60,10 @@ export class Command {
     }
 
     const playButton = querySelector('div.command button.play');
+    playButton.addEventListener('click', () => {
+      this.isPlaying = !this.isPlaying;
+      this.render();
+      if (this.isPlaying) this.playAsync();
+    });
   }
 }

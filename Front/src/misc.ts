@@ -43,3 +43,9 @@ export const querySelector = <T extends HTMLElement>(
 export const objectKeys = <T extends object>(o: T): (keyof T)[] => {
   return Object.keys(o) as (keyof T)[];
 };
+
+export const sleep = (delay: number) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, delay);
+  });
+};
