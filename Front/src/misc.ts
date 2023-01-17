@@ -25,3 +25,15 @@ export const drawLine = (p1: Point, p2: Point) => {
   line.setAttributeNS(null, 'y2', p2.y + '');
   container && container.appendChild(line);
 };
+
+export const querySelector = (cssSelector: string) => {
+  const elt = document.querySelector(cssSelector);
+  if (elt === null)
+    throw new Error(`Cannot find element with selector: ${cssSelector}.`);
+
+  return elt;
+};
+
+export const objectKeys = <T>(o: T): (keyof T)[] => {
+  return Object.keys(o as object) as (keyof T)[];
+};
