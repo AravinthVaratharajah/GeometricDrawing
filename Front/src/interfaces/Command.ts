@@ -3,38 +3,39 @@ import { objectKeys, querySelector, sleep } from '../misc';
 import { Config } from './Config';
 
 export class Command {
-  _isPlaying = false;
-  callback: (config: Config) => void = () => {};
+  #isPlaying = false;
+  #callback: (config: Config) => void = () => {};
+
+  #config: Config = {
+    samples: 29,
+    multiplicationFactor: 1,
+  };
 
   constructor(config: Config) {
     this.config = config;
     this.setupActions();
   }
 
+  get config() {
+    return this.#config;
+  }
+
+  set config(val: Config) {
+    this.#config = val;
+    this.render();
+    this.#callback(this.#config);
+  }
+
   get isPlaying() {
     // console.log('get isPlaying');
-    return this._isPlaying;
+    return this.#isPlaying;
   }
 
   set isPlaying(val: boolean) {
     // console.log(`set isPlaying ${val}`);
-    this._isPlaying = val;
+    this.#isPlaying = val;
     this.render();
     if (this.isPlaying) this.playAsync();
-  }
-
-  _config: Config = {
-    samples: 29,
-    multiplicationFactor: 1,
-  };
-
-  get config() {
-    return this._config;
-  }
-  set config(val: Config) {
-    this._config = val;
-    this.render();
-    this.callback(this.config);
   }
 
   increaseMultiplicationFactor() {
@@ -53,7 +54,7 @@ export class Command {
   }
 
   onUpdate(callback: (config: Config) => void) {
-    this.callback = callback;
+    this.#callback = callback;
   }
 
   async playAsync() {
