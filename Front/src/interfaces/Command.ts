@@ -46,6 +46,7 @@ export class Command {
     mf += 0.01;
     mf %= 100;
     mf = +mf.toFixed(2);
+    return mf;
   }
 
   onUpdate(callback: (config: Config) => void) {
