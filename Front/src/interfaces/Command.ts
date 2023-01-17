@@ -3,35 +3,34 @@ import { objectKeys, querySelector, sleep } from '../misc';
 import { Config } from './Config';
 
 export class Command {
-  #isPlaying = false;
   #callback: (config: Config) => void = () => {};
-
   #config: Config = {
     samples: 29,
     multiplicationFactor: 1,
   };
+  #isPlaying = false;
 
   constructor(config: Config) {
     this.config = config;
     this.setupActions();
   }
 
-  get config() {
+  private get config() {
     return this.#config;
   }
 
-  set config(val: Config) {
+  private set config(val: Config) {
     this.#config = val;
     this.render();
     this.#callback(this.#config);
   }
 
-  get isPlaying() {
+  private get isPlaying() {
     // console.log('get isPlaying');
     return this.#isPlaying;
   }
 
-  set isPlaying(val: boolean) {
+  private set isPlaying(val: boolean) {
     // console.log(`set isPlaying ${val}`);
     this.#isPlaying = val;
     this.render();
