@@ -34,6 +34,6 @@ export const querySelector = (cssSelector: string) => {
   return elt;
 };
 
-export const objectKeys = <T>(o: T): (keyof T)[] => {
-  return Object.keys(o as object) as (keyof T)[];
+export const objectKeys = <T extends object>(o: T): (keyof T)[] => {
+  return Object.keys(o) as (keyof T)[];
 };
